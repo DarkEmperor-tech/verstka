@@ -1,0 +1,175 @@
+.FlexBox{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #000;
+    background-color: aqua;
+    overflow: hidden;
+}
+.letters{
+    position:absolute;
+    width: 30px;
+    height: 30px;
+    transition: all 1s ease;
+}
+
+.P-letter{
+    position: relative;
+    top: 2px;
+    left: 0;
+}
+.N-letter{
+    bottom: 2px;
+    right: 0;
+}
+.letters svg{
+    width: 100%;
+    height: 100%;
+}
+.FlexBox:hover .N-letter{
+    animation: moveN 3s forwards, moveLetterN 2s forwards;
+    animation-delay: 0s, 7s;
+}
+.FlexBox:hover .P-letter{
+    animation: moveP 3s forwards, moveLetterP 2s forwards;
+    animation-delay: 0s, 7s;
+}
+@keyframes moveN{
+    0%{}
+    25%{transform: translate(-170px, 0px) scale(1.1);}
+    50%{transform: translate(-60px, -30px) scale(1.3);}
+    100%{transform: translate(-65px, -80px) scale(1.5);}
+}
+
+@keyframes moveP{
+    0%{}
+    25%{transform: translate(170px, 0px) scale(1.1);}
+    50%{transform: translate(60px, 30px) scale(1.3);}
+    100%{transform: translate(65px, 85px) scale(1.5);}
+}
+
+
+.figur{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 75px;
+    left: 73px;
+    pointer-events: none;
+}
+
+.krug, .kvadrat{
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    opacity: 0; 
+}
+.krug{
+    background-color: aliceblue;
+    border-radius: 50%;
+    top: 5px;
+    left: 25px;
+}
+.kvadrat{
+    background-color: rgb(0, 69, 129);
+    top: 5px;
+    left: -13px;
+}
+
+
+
+.FlexBox:active .krug,
+.FlexBox:active .kvadrat{
+animation: moveFigur 0s forwards;
+animation-delay: 1s;
+}
+@keyframes moveFigur{
+    to{opacity: 1;}
+}
+
+.FlexBox:active .krug{
+    /* animation: moveKrug 5s linear forwards; */
+    animation: moveKrug 3s linear forwards;   
+    animation-delay: 0.5s;
+}
+.FlexBox:active .kvadrat{
+    animation: moveKvadrat 3s linear forwards;
+    animation-delay: 0.5s;
+}
+.krug{
+    offset-path: path("M 35.1621 0 C 35.1094 0 35.0625 0 35.0156 0.0059 C 34.248 0.0059 33.6211 0.627 33.6211 1.3945 L 33.6211 38.4844 L 14.8477 7.3418 L 10.8809 0.668 C 10.6289 0.252 10.1777 0 9.6855 0 C 9.6855 0 8.4551 0.0938 8.4551 1.3359 L 8.4551 43.5 C 8.4551 44.2676 9.082 44.8887 9.8496 44.8887 C 10.6172 44.8887 11.2383 44.2676 11.2383 43.5 L 11.2383 6.5449 L 29.9414 37.6523 L 33.9551 44.332 C 34.2129 44.748 34.6641 45 35.1504 45 L 35.5137 45 C 36.1172 44.8359 36.5391 44.291 36.5449 43.6641 L 36.5449 1.3945 C 36.5449 0.627 35.9297 0.0059 35.1621 0 Z");
+    offset-rotate: 0deg;
+    transform: translate(-2.5px, -2.5px);
+}
+.kvadrat{
+    offset-path: path("M 26.8242 0 L 9.8145 0 C 9.0469 0 8.4199 0.627 8.4199 1.3945 L 8.4199 45 L 11.209 45 L 11.209 23.8945 L 26.8242 23.8945 C 32.209 23.8945 36.5801 19.5234 36.5801 14.1328 L 36.5801 9.7559 C 36.5801 4.3711 32.209 0 26.8242 0 Z M 33.791 14.1328 C 33.791 17.9824 30.6738 21.1055 26.8242 21.1055 L 11.209 21.1055 L 11.209 2.7891 L 26.8242 2.7891 C 30.6738 2.7891 33.791 5.9063 33.791 9.7559 Z");
+    offset-rotate: 0deg;
+    transform: translate(-2.5px, -2.5px);
+}
+@keyframes moveKrug{
+    0% {
+        offset-distance: 0%;
+        opacity: 1;
+        
+    }
+    100% {
+        offset-distance: 100%;
+        opacity: 1;
+    }
+}
+@keyframes moveKvadrat{
+    0% {
+        offset-distance: 0%;
+        opacity: 1;
+    }
+    100% {
+        offset-distance: 100%;
+        opacity: 1;
+    }
+}
+
+@keyframes moveLetterN{
+    0%{
+        transform: translate(-65px, -80px) rotate(0deg) scale(1.5);
+        opacity: 1;
+    }
+    100%{
+        transform: translate(-65px, -80px) rotate(360deg) scale(1.5);
+        opacity: 0;
+    }
+}
+@keyframes moveLetterP{
+    0%{
+        transform: translate(65px, 85px) rotate(0deg) scale(1.5);
+        opacity: 1;
+    }
+    100%{
+        transform: translate(65px, 85px) rotate(360deg) scale(1.5);
+        opacity: 0;
+    }
+}
+
+.foto{
+    text-align: center;
+    opacity: 0;
+}
+@keyframes fotofoto{
+    to { opacity: 1;}
+}
+.FlexBox:hover .foto{
+    animation: fotofoto 1s forwards;
+    animation-delay: 9s;
+}
+
+@keyframes puls{
+    0%{
+        transform: scale(1);
+    }
+    100%{
+        transform: scale(1.1);
+    }
+}
+.FlexBox:hover {
+    animation: puls 2s infinite alternate;
+    animation-delay: 10s;
+}

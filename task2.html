@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="task2_style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Noto+Sans+Mahajani&family=Roboto&display=swap" rel="stylesheet">
+    <title>Задание 2</title>
+</head>
+<body>
+
+    <a href="task2.html"><button class="menu_butt">Назад</button></a>
+
+    <div class="container">
+        <div class="choices" id="choices">
+            <h2>Приступаем?</h2>
+            <button class="menu_butt" id="yesButt" onclick="firstInput(1)">Да</button>
+            <button class="menu_butt" id="noButt" onclick="firstInput(0)">Нет</button>
+        </div>
+        <div class="noShoes" id="noShoes" style="display: none;">
+            <img src="https://proza.ru/pics/2020/11/30/969.jpg" alt="ошибка">
+            <h2 style="text-align: center;">Ну тогда босиком ходите!</h2>
+        </div>
+        
+        <div class="shoeSelect" id="shoeSelect">
+            <h1 style="text-align: center;">Расчёт длины каблука</h1>
+            <fieldset>
+                <legend>Вы кто?</legend>
+              
+                <div>
+                  <input type="radio" id="male" name="gender" value="male" />
+                  <label for="male">Мужчина</label>
+                </div>
+              
+                <div>
+                  <input type="radio" id="female" name="gender" value="female" />
+                  <label for="female">Женщина</label>
+                </div>
+            </fieldset>
+            <div class="form">
+                <input id="inField" type="number" step="1" min="1" max="100" required class="inField" placeholder="размер ноги">
+                <button id="1" class="menu_butt">Ok</button>
+            </div>
+        </div>
+
+        <div style="display: none;" class="result" id="result">
+            <h3 id="cabHeight" style="text-align: center;"></h3>
+            <img src="" alt="" id="cabImage">
+        </div>
+    </div>
+</body>
+<script src="task2_script.js"></script>
+</html>

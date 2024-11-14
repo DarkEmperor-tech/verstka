@@ -1,0 +1,92 @@
+
+body {
+  background-color: #46747a;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+}
+
+.container {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 40rem;
+}
+
+.menu_butt {
+    border-color: aqua;
+    width: auto;
+    padding: 5px 20px;
+    height: 50px;
+    text-align: center;
+  }
+  .menu_butt:hover {
+   border-color: aquamarine;
+
+  }
+  .menu_butt:active {
+    border-color: rgb(60, 75, 70);
+
+  }
+
+#backButt {
+    position: absolute;
+    bottom: 2%;
+}
+
+img {
+    width: 400px;
+    height: auto;
+}
+
+.choices .menu_butt {
+    width: 7rem;
+    height: 2rem;
+}
+
+.choices {
+    text-align: center;
+}
+
+.shoeSelect {
+    display: none;
+    align-items: center;
+}
+
+.shoeSelect fieldset {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+fieldset {
+    width: 25rem;
+    border-color: rgb(11, 53, 54);
+}
+
+fieldset div {
+    padding: 0.5rem 1rem;
+}
+
+.form {
+    width: 25rem;
+    padding-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.form .menu_butt {
+    width: 20%;
+    height: 2rem;
+    font-size: 1rem;
+    margin: 0 1rem;
+}
+
+.inField {
+    font-size: 1rem;
+    text-align: center;
+
+    margin-left: 0.5%;
+    width: 85%;
+    height: 2rem;
+}

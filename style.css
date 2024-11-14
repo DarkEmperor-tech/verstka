@@ -1,0 +1,200 @@
+/* Основные стили для сайта */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Стили для шапки (header) */
+header {
+    position: fixed;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    top: 0px;
+    padding: 40px 0;
+    text-align: center;
+}
+
+header .menu ul {
+    list-style: none;
+}
+
+header .menu ul li {
+    display: inline-block;
+    margin-right: 30px;
+}
+
+header .menu ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header .menu ul li a:hover {
+    text-decoration: underline;
+}
+
+.logo{
+	position: relative;
+	height: 40px;
+    width: 100px;
+	background: #bdd73c;
+	border-radius:60px 60px 0 0 / 50px 50px 0 0;
+	border: 2px solid #6fb74d;
+    left: 30px;
+    top: 20px;
+}
+.logo .ant{
+	width: 2px;
+	height: 23px;
+	background: #bdd73c;
+	border: 2px solid #6fb74d; 
+	position: absolute;
+	border-radius: 3px 3px 0 0;
+	border-bottom: 2px solid #bdd73c;
+    top: 20px;
+}
+.logo .ant_left{
+	top: -22px;
+	left: 15px;
+	-webkit-transform: rotate(-30deg);
+	-moz-transform: rotate(-30deg);
+	-ms-transform: rotate(-30deg);
+	-o-transform: rotate(-30deg);
+	transform: rotate(-30deg);
+}
+.logo .ant_right{
+	top: -22px;
+	left: 73px;
+	-webkit-transform: rotate(30deg);
+	-moz-transform: rotate(30deg);
+	-ms-transform: rotate(30deg);
+	-o-transform: rotate(30deg);
+	transform: rotate(30deg);
+}
+.lefteye, .righteye{
+	position: absolute;
+	background: #fff;
+	border: 2px solid #6fb74d;
+	width: 10px;
+	height: 10px;
+	top: 15px;
+	-webkit-border-radius:10px;
+	-moz-border-radius:10px;
+	border-radius:10px;
+}
+.lefteye{
+	left: 15px;
+}
+.righteye{
+	left: 65px;
+}
+
+/* Стили для главных секций */
+main{
+    margin-top: 160px;
+}
+main section {
+
+    margin: 20px 20px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+h1, h2 {
+    color: #333;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+/* Стили для изображений */
+img {
+    max-width: 200px;
+    height: auto;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Стили для футера */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Стили для ссылок */
+a {
+    color: #0099cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#contact ul{
+    list-style-type: none;
+}
+
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    header .menu ul li {
+        display: table-cell;
+
+    }
+    header .menu ul li a{
+        display: block;
+        padding: 20px;
+    }
+    header .menu{
+    display: table;
+    position: relative;
+        left: 50%;
+        transform: translate(-50%,0);
+    }
+    header .menu ul{
+    display: table-row;
+    }
+    header{
+    z-index: 20;
+    }
+    .logo{
+    position: relative;
+        left: 50%;
+        transform: translate(-50%,0);
+    }
+    main section{
+        text-align: center;
+        z-index: 10;
+        position: relative;
+        top: 50px;
+    }
+    img {
+        position: relative;
+        left: 50%;
+        transform: translate(-50%,0);
+        max-width: 60%;
+    }
+    footer{
+        position: relative;
+        bottom: -49px;
+    }
+
+}
