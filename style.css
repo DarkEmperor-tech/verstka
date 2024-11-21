@@ -21,6 +21,7 @@ header {
     top: 0px;
     padding: 40px 0;
     text-align: center;
+    z-index: 100000;
 }
 
 header .menu ul {
