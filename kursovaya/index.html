@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игра</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="game-container">
+
+        <div id="timer" class="timer">Время: с</div>
+        <!-- Главное меню -->
+        <div id="main-menu" class="game-level">
+            <h1>Электронная игра</h1>
+            <div class="menu-buttons">
+                <button id="start-level1">Уровень 1</button>
+                <button id="start-level2">Уровень 2</button>
+                <button id="start-level3">Уровень 3</button>
+                <button id="show-leaderboard" class="leaderboard-button">Таблица лидеров</button>
+            </div>
+        </div>
+
+        <!-- Уровень 1: Подбор формулы -->
+        <div id="level1" class="game-level">
+            <h2>Уровень 1: Подбор формулы</h2>
+            <div id="formula-task">
+                <p>Задание: <span id="current-task">Соберите формулу</span></p>
+                <p class="formula-hint"></p>
+            </div>
+            
+            <!-- Контейнер для элементов формулы -->
+            <div class="formula-container">
+                <!-- Элементы будут добавляться динамически -->
+            </div>
+            
+            <!-- Отображение текущей формулы -->
+            <div id="current-formula">Формула: </div>
+            <div id="level1-result"></div>
+            
+            <!-- Кнопки управления -->
+            <button id="reset-formula">Сбросить</button>
+            <button id="back-to-menu-level1">Выход в меню</button>
+        </div>
+
+        <!-- Уровень 2: Сборка схемы -->
+        <div id="level2" class="game-level">
+            <h2>Уровень 2: Сборка электрической схемы</h2>
+            
+            <!-- Контейнер для схемы -->
+            <div id="circuit-container-level2" class="circuit-container">
+                <!-- Точки для перетаскивания будут добавлены динамически -->
+            </div>
+            
+            <!-- Контейнер с элементами для перетаскивания -->
+            <div id="elements-container-level2" class="elements-container">
+                <!-- Элементы будут добавлены динамически -->
+            </div>
+            
+            <div id="level2-result"></div>
+            <button id="back-to-menu-level2">Выход в меню</button>
+        </div>
+
+        <!-- Уровень 3: Выбор компонентов -->
+        <div id="level3" class="game-level">
+            <h2>Уровень 3: Выбор компонентов</h2>
+            <div id="selection-container">
+                <!-- Элементы будут добавлены динамически -->
+            </div>
+            <button id="back-to-menu-level3">Выход в меню</button>
+        </div>
+
+    </div>
+    <script src="effects.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Начало игры</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="start-container">
+        <h1>Добро пожаловать в игру!</h1>
+        <form class="start-form" id="start-form">
+            <div class="form-group">
+                <label for="playerName">Ваше имя:</label>
+                <input type="text" id="playerName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="difficulty">Выберите сложность:</label>
+                <select id="difficulty">
+                    <option value="easy">Легкий</option>
+                    <option value="medium">Средний</option>
+                    <option value="hard">Сложный</option>
+                </select>
+            </div>
+            
+            <button type="button" id="startGame" class="start-button">Начать игру</button>
+        </form>
+        <button id="showLeaderboard" class="leaderboard-button-1">Таблица лидеров</button>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
