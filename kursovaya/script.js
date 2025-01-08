@@ -1,5 +1,5 @@
 // Здесь хранятся основные данные игры
-let gameData = JSON.parse(localStorage.getItem('currentGame')); // Загружаем сохраненные данные игры
+let gameData = JSON.parse(localStorage.getItem('currentGame')) || { isAdminMode: false }; // Загружаем сохраненные данные игры
 let timer; // Для работы таймера
 let timeLeft; // Сколько времени осталось
 let currentLevelAttempts = 0; // Сколько попыток сделано на текущем уровне
@@ -9,6 +9,8 @@ let circuitElementsLevel2 = []; // Элементы схемы для второ
 let formulaElements = []; // Элементы формулы для первого уровня
 let currentFormula = []; // Текущая собранная формула
 let currentCircuitLayout; // Добавим переменную для хранения текущей схемы
+let randomFormula; // Объявляем переменную на уровне модуля
+
 
 // Добавляем объект для хранения попыток по уровням
 let attemptsPerLevel = {
@@ -21,19 +23,34 @@ let attemptsPerLevel = {
 const FORMULAS = [
     {
         elements: ['R1', '+', 'R2', '=', 'U'],
-        hint: 'Соберите формулу для последовательного соединения резисторов: R1 + R2 = U'
+        hint: 'Соберите формулу для последовательного соединения резисторов: R1 + R2 = U',
+        validAnswers: [
+            'R1+R2=U',
+            'R2+R1=U'
+        ]
     },
     {
         elements: ['I', '*', 'R', '=', 'U'],
-        hint: 'Соберите закон Ома: I * R = U'
+        hint: 'Соберите закон Ома: I * R = U',
+        validAnswers: [
+            'I*R=U',
+            'R*I=U'
+        ]
     },
     {
         elements: ['P', '=', 'U', '*', 'I'],
-        hint: 'Соберите формулу мощности: P = U * I'
+        hint: 'Соберите формулу мощности: P = U * I',
+        validAnswers: [
+            'P=U*I',
+            'P=I*U'
+        ]
     },
     {
         elements: ['R', '=', 'U', '/', 'I'],
-        hint: 'Соберите формулу сопротивления: R = U / I'
+        hint: 'Соберите формулу сопротивления: R = U / I',
+        validAnswers: [
+            'R=U/I'
+        ]
     }
 ];
 
@@ -189,25 +206,22 @@ function calculateLevelScore(level) {
 
 // Показывает нужный уровень или меню
 function showLevel(level) {
-    // Прячем все уровни
     document.querySelectorAll('.game-level').forEach(levelDiv => {
         levelDiv.style.display = 'none';
     });
 
-    // Если выбрано меню - показываем его
     if (level === 'menu') {
         document.getElementById('main-menu').style.display = 'block';
         return;
     }
 
     // Проверяем, можно ли играть этот уровень
-    if (level > gameData.currentLevel) {
+    if (level > gameData.currentLevel && !gameData.isAdminMode) {
         alert('Сначала пройдите предыдущий уровень!');
         document.getElementById('main-menu').style.display = 'block';
         return;
     }
 
-    // Показываем выбранный уровень и запускаем его
     const levelElement = document.getElementById(`level${level}`);
     if (levelElement) {
         levelElement.style.display = 'block';
@@ -243,31 +257,30 @@ function addMenuHandlers() {
 function initLevel1() {
     attemptsPerLevel[1] = 0; // Сбрасываем попытки первого уровня
     currentFormula = [];
-    const randomFormula = getRandomItem(FORMULAS);
+    randomFormula = getRandomItem(FORMULAS); // Получаем случайную формулу
     formulaElements = randomFormula.elements;
     
     const hintElement = document.querySelector('.formula-hint');
     if (hintElement) {
         hintElement.textContent = randomFormula.hint;
     }
-    
-    // Создаем элементы формулы для перетаскивания
+
+    // Перемешиваем элементы в случайном порядке
+    let shuffledElements;
+    do {
+        shuffledElements = [...randomFormula.elements].sort(() => Math.random() - 0.5);
+    } while (shuffledElements.join('') === randomFormula.elements.join(''));
+
+    // Создаем кнопки для каждого элемента
     const container = document.querySelector('.formula-container');
-    if (container) {
-        container.innerHTML = '';
-        
-        // Перемешиваем элементы в случайном порядке
-        const shuffledElements = [...randomFormula.elements].sort(() => Math.random() - 0.5);
-        
-        // Создаем кнопки для каждого элемента
-        shuffledElements.forEach(element => {
-            const div = document.createElement('div');
-            div.className = 'formula-element';
-            div.textContent = element;
-            div.addEventListener('click', handleFormulaElementClick);
-            container.appendChild(div);
-        });
-    }
+    container.innerHTML = ''; // Очищаем контейнер перед добавлением новых элементов
+    shuffledElements.forEach(element => {
+        const div = document.createElement('div');
+        div.className = 'formula-element';
+        div.textContent = element;
+        div.addEventListener('click', handleFormulaElementClick);
+        container.appendChild(div);
+    });
     
     // Очищаем предыдущие результаты
     document.getElementById('current-formula').textContent = 'Формула: ';
@@ -297,7 +310,14 @@ function handleFormulaElementClick(event) {
 
         // Если собрали все элементы формулы - проверяем правильность
         if (currentFormula.length === formulaElements.length) {
-            if (currentFormula.join('') === formulaElements.join('')) {
+            const userAnswer = currentFormula.join(''); // Формируем ответ пользователя
+            
+            // Проверяем, соответствует ли ответ одному из допустимых
+            const isCorrect = randomFormula.validAnswers.some(answer => 
+                answer === userAnswer
+            );
+
+            if (isCorrect) {
                 // Если формула правильная
                 sounds.correct.play();
                 createParticles(event.clientX, event.clientY, '#4CAF50'); // Зеленые частицы при успехе
@@ -421,6 +441,13 @@ function initLevel2() {
             dropPoint.dataset.point = point.point;
             dropPoint.style.top = point.top;
             dropPoint.style.left = point.left;
+
+            // Создаем метку для дроп-поинта
+            const label = document.createElement('span');
+            label.textContent = `Точка ${point.point}`;
+            label.style.pointerEvents = 'none'; // Отключаем события мыши для текста
+            dropPoint.appendChild(label);
+
             container.appendChild(dropPoint);
         });
 
@@ -472,11 +499,17 @@ function handleDragOver(e) {
 // Обработка броска элемента на точку схемы
 function handleDropLevel2(e) {
     e.preventDefault();
-    const id = e.dataTransfer.getData('text/plain'); // Получаем ID перетаскиваемого элемента
-    const dropPoint = e.target;
+    const id = e.dataTransfer.getData('text/plain');
+    let dropPoint = e.target;
 
-    // Проверяем, что бросили на точку и она пустая
-    if (dropPoint.classList.contains('drop-point') && !dropPoint.hasChildNodes()) {
+    // Если попали на текст внутри точки, получаем саму точку
+    if (!dropPoint.classList.contains('drop-point')) {
+        dropPoint = dropPoint.closest('.drop-point');
+    }
+
+    // Проверяем, что бросили на точку и она не содержит размещенный элемент
+    if (dropPoint && dropPoint.classList.contains('drop-point') && 
+        !dropPoint.querySelector('.placed-element')) {
         const element = document.getElementById(id);
         const elementCopy = document.createElement('div');
         elementCopy.className = 'placed-element';
@@ -486,7 +519,6 @@ function handleDropLevel2(e) {
         // Добавляем возможность удалить элемент кликом
         elementCopy.addEventListener('click', function() {
             dropPoint.removeChild(elementCopy);
-            // Удаляем элемент из списка размещенных
             circuitElementsLevel2 = circuitElementsLevel2.filter(item => 
                 item.dropPoint !== dropPoint.dataset.point
             );
@@ -495,14 +527,13 @@ function handleDropLevel2(e) {
         
         dropPoint.appendChild(elementCopy);
         
-        // Запоминаем, где какой элемент разместили
         circuitElementsLevel2.push({
             elementId: id,
             dropPoint: dropPoint.dataset.point
         });
 
         updateCircuitStatus();
-        createParticles(e.clientX, e.clientY, '#2196F3'); // Синие частицы при размещении элемента
+        createParticles(e.clientX, e.clientY, '#2196F3');
     }
 }
 
@@ -519,27 +550,38 @@ function checkCircuitLevel2() {
     let isCorrect = true;
     let errors = [];
 
-    // Проверяем каждый размещенный элемент
+    // Базовая проверка размещения элементов
     circuitElementsLevel2.forEach(placement => {
         const correctPoints = currentCircuitLayout.correctPositions[placement.elementId];
-        
-        // Если элемент должен быть в этой точке
         if (!correctPoints || !correctPoints.includes(placement.dropPoint)) {
             isCorrect = false;
             errors.push(`${placement.elementId} размещен неправильно`);
         }
     });
 
-    // Проверяем, все ли необходимые элементы размещены
-    const requiredElements = Object.keys(currentCircuitLayout.correctPositions);
-    const placedElements = circuitElementsLevel2.map(p => p.elementId);
-    
-    requiredElements.forEach(element => {
-        if (!placedElements.includes(element)) {
-            isCorrect = false;
-            errors.push(`Не размещен элемент: ${element}`);
+    // Проверка порядка размещения в зависимости от типа схемы
+    if (isCorrect) {
+        const placedPoints = circuitElementsLevel2.map(p => p.dropPoint);
+
+        if (currentCircuitLayout.name === 'Последовательная цепь') {
+            // Проверяем последовательный порядок от 1 до 5
+            for (let i = 0; i < placedPoints.length - 1; i++) {
+                if (parseInt(placedPoints[i]) >= parseInt(placedPoints[i + 1])) {
+                    isCorrect = false;
+                    errors.push('Элементы должны быть размещены последовательно от точки 1 к точке 5');
+                    break;
+                }
+            }
+        } else if (currentCircuitLayout.name === 'Параллельная цепь') {
+            // Проверяем заданный порядок размещения
+            const correctOrder = ['1', '3', '2', '5', '4'];
+            if (JSON.stringify(placedPoints) !== JSON.stringify(correctOrder)) {
+                isCorrect = false;
+                errors.push('Разместите элементы в порядке: 1->3->2->5->4');
+            }
         }
-    });
+        // Для смешанной схемы дополнительных проверок не требуется
+    }
 
     const resultElement = document.getElementById('level2-result');
     if (isCorrect) {
@@ -549,33 +591,71 @@ function checkCircuitLevel2() {
         resultElement.style.color = 'green';
         handleLevelComplete(2);
     } else {
-        attemptsPerLevel[2]++; // Увеличиваем счетчик для второго уровня
+        attemptsPerLevel[2]++;
         sounds.wrong.play();
         animations.shake(document.getElementById('circuit-container-level2'));
         resultElement.textContent = 'Ошибка: ' + errors.join(', ');
         resultElement.style.color = 'red';
+        
+        // Добавляем задержку перед сбросом элементов
+        setTimeout(() => {
+            resetCircuitElements();
+        }, 2000); // Задержка 2 секунды
     }
 }
 
-// Подготовка третьего уровня
+// Функция сброса элементов схемы
+function resetCircuitElements() {
+    // Очищаем все точки
+    const dropPoints = document.querySelectorAll('.drop-point');
+    dropPoints.forEach(point => {
+        const placedElement = point.querySelector('.placed-element');
+        if (placedElement) {
+            point.removeChild(placedElement);
+        }
+    });
+    
+    // Очищаем массив размещенных элементов
+    circuitElementsLevel2 = [];
+    
+    // Обновляем статус
+    updateCircuitStatus();
+}
+
+// Стили для карточек
 function initLevel3() {
-    attemptsPerLevel[3] = 0; // Сбрасываем попытки третьего уровня
+    attemptsPerLevel[3] = 0;
     const randomTask = getRandomItem(COMPONENT_TASKS);
     const selectionContainer = document.getElementById('selection-container');
     if (!selectionContainer) return;
+    
+    const difficulty = gameData.difficulty;
     
     selectionContainer.innerHTML = `
         <div class="level3-task">
             <h3>${randomTask.task}</h3>
         </div>
         
-        <div class="components-grid">
-            ${randomTask.components.map(component => `
-                <div class="component-card" data-correct="${component.correct}">
-                    <img src="images/${component.id}.png" alt="${component.name}">
-                    <p>${component.name}</p>
-                </div>
-            `).join('')}
+        <div class="components-container ${difficulty}">
+            ${randomTask.components.map((component, index) => {
+                let randomX, randomY;
+                if (difficulty === 'easy') {
+                    randomX = Math.min(Math.max(Math.random() * 30 + 10, 10), 60); // от 10% до 60%
+                    randomY = Math.min(Math.max(Math.random() * 20 + 10, 10), 70); // от 10% до 70%
+                } else {
+                    // Центрируем начальное положение элементов
+                    randomX = Math.min(Math.max(Math.random() * 40 + 30, 30), 70); // от 30% до 70%
+                    randomY = Math.min(Math.max(Math.random() * 40 + 30, 30), 70); // от 30% до 70%
+                }
+                return `
+                    <div class="component-card ${difficulty}" 
+                         data-correct="${component.correct}"
+                         style="left: ${randomX}%; top: ${randomY}%; animation-delay: ${-index * 2}s;">
+                        <img src="images/${component.id}.png" alt="${component.name}">
+                        <p>${component.name}</p>
+                    </div>
+                `;
+            }).join('')}
         </div>
         
         <div class="level3-controls">
@@ -584,15 +664,18 @@ function initLevel3() {
         </div>
     `;
 
-    // Добавляем обработчики для карточек компонентов
     const componentCards = document.querySelectorAll('.component-card');
-    componentCards.forEach(card => {
+    componentCards.forEach((card, index) => {
+        if (difficulty !== 'easy') {
+            card.style.animationDelay = `${-index * 2}s`;
+            card.style.animationTimingFunction = 'ease-in-out';
+        }
+        
         card.addEventListener('click', () => {
-            card.classList.toggle('selected'); // При клике выделяем/снимаем выделение
+            card.classList.toggle('selected');
         });
     });
 
-    // Добавляем обработчик для кнопки проверки
     const checkButton = document.getElementById('check-components');
     if (checkButton) {
         checkButton.addEventListener('click', checkLevel3Components);
