@@ -640,8 +640,8 @@ function initLevel3() {
             ${randomTask.components.map((component, index) => {
                 let randomX, randomY;
                 if (difficulty === 'easy') {
-                    randomX = Math.min(Math.max(Math.random() * 30 + 10, 10), 60); // от 10% до 60%
-                    randomY = Math.min(Math.max(Math.random() * 20 + 10, 10), 70); // от 10% до 70%
+                    randomX = Math.min(Math.max(Math.random() * 60 + 10, 10), 80); // от 10% до 80%
+                    randomY = Math.min(Math.max(Math.random() * 60 + 10, 10), 80); // от 10% до 80%
                 } else {
                     // Центрируем начальное положение элементов
                     randomX = Math.min(Math.max(Math.random() * 40 + 30, 30), 70); // от 30% до 70%

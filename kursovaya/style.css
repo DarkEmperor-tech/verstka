@@ -282,22 +282,19 @@ body {
 .components-container {
     position: relative;
     width: 80%;
-    height: 500px;
     margin: 20px auto;
-    background: #f9f9f9;
     padding: 20px;
-    box-sizing: border-box;
-    overflow: hidden;
+    background: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 8px;
+    height: 500px;
 }
 
 .components-container.easy {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-left: 5%;
+    position: relative;
+    display: block;
+    height: 500px;
+    overflow: hidden;
 }
 
 .component-card {
@@ -308,18 +305,20 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     cursor: pointer;
-    z-index: 1;
-    max-width: calc(100% - 40px);
-    max-height: calc(100% - 40px);
-}
-
-.component-card.selected {
-    border: 2px solid #4CAF50;
-    z-index: 1000;
+    transition: transform 0.3s;
 }
 
 .component-card.easy {
-    position: relative;
+    position: absolute;
+    transform: none;
+    margin: 10px;
+    transition: transform 0.3s;
+}
+
+.component-card.selected {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 2px solid #4CAF50;
 }
 
 .component-card.medium {
